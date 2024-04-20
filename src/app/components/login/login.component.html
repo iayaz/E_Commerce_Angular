@@ -1,0 +1,17 @@
+<div class="w-full h-full flex justify-center items-center">
+  <form class="grid grid-cols-1 gap-4 max-w-md" [formGroup]="userDetails" (ngSubmit)="submitUserDetails()">
+    <mat-form-field class="">
+      <mat-label>Email</mat-label>
+      <input class="w-full" type="email" matInput formControlName="email" placeholder="Ex. pat@example.com">
+      <mat-error *ngIf="userDetails.get('email')?.hasError('email')">Please enter a valid email address</mat-error>
+      <mat-error *ngIf="userDetails.get('email')?.hasError('required')">Email is <strong>required</strong></mat-error>
+    </mat-form-field>
+    <mat-form-field class="">
+      <mat-label>Password</mat-label>
+      <input class="w-full" type="password" matInput formControlName="password" placeholder="Enter your password">
+      <mat-error *ngIf="userDetails.get('password')?.hasError('required')">Password is <strong>required</strong></mat-error>
+      <mat-error *ngIf="userDetails.get('password')?.hasError('minlength')">Password must be at least 3 characters</mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="accent" type="submit">Login</button>
+  </form>
+</div>

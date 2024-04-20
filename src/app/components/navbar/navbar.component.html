@@ -1,0 +1,37 @@
+<mat-toolbar color="primary">
+  <div class="flex gap-4">
+    <button mat-flat-button class="px-4 py-2" (click)="toggleClicked('shop')">
+      <span>SHOP</span>
+      <mat-icon *ngIf="isClickedShop">expand_less</mat-icon>
+      <mat-icon *ngIf="!isClickedShop">expand_more</mat-icon>
+    </button>
+    <button mat-flat-button class="px-4 py-2" (click)="toggleClicked('about')">
+      <span>About</span>
+      <mat-icon *ngIf="isClickedAbout">expand_less</mat-icon>
+      <mat-icon *ngIf="!isClickedAbout">expand_more</mat-icon>
+    </button>
+  </div>
+  <div class="flex-grow"></div>
+  <button mat-flat-button class="content-end" *ngIf="!userLoggedIn" (click) = 'userSigned()'><mat-icon>login</mat-icon></button>
+  <button mat-flat-button *ngIf="userLoggedIn" (click) = 'userSigned()'><mat-icon>logout</mat-icon></button>
+</mat-toolbar>
+
+<ng-container *ngIf="isClickedShop">
+  <div class="w-full sm:w-1/3 shadow p-4 bg-gray-100 absolute z-10">
+    <div class="italic font-serif">CATEGORIES</div>
+    <div class="pl-4 mt-2 font-mono text-gray-700">
+      <div>MENS</div>
+      <div>WOMENS</div>
+      <div>ELECTRONICS</div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="isClickedAbout">
+  <div class="w-full sm:w-1/3 shadow p-4 bg-gray-100 absolute z-10">
+    <p class="font-mono font-serif">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto eum
+      ea, quia ullam consequatur veniam sapiente? Rerum laudantium at dolorem?
+    </p>
+  </div>
+</ng-container>
