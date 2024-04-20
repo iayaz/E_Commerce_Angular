@@ -18,6 +18,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { MatDialogRef } from '@angular/material/dialog';
+import { AuthService } from '../../service/auth/auth.service';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -39,7 +40,8 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private api: ApiService,
-    private dialogRef: MatDialogRef<LoginComponent>
+    private dialogRef: MatDialogRef<LoginComponent>,
+    private auth: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -59,11 +61,12 @@ export class LoginComponent implements OnInit {
       (user) => user.email === email && user.password === password
     );
     if (userExists) {
-      localStorage.setItem('userDetails', JSON.stringify(userExists));
+      // localStorage.setItem('userDetails', JSON.stringify(userExists));
+      this.auth.loginUser(userExists);
       this.userDetails.reset();
-      this.dialogRef.close({ success: true }); // Indicate successful login
+      this.dialogRef.close({ success: true });
     } else {
-      this.dialogRef.close({ success: false }); // Indicate unsuccessful login
+      this.dialogRef.close({ success: false });
     }
   }
 }

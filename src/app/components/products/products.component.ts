@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginComponent } from '../login/login.component';
+import { AuthService } from '../../service/auth/auth.service';
 @Component({
   selector: 'app-products',
   standalone: true,
@@ -16,10 +17,17 @@ import { LoginComponent } from '../login/login.component';
 export class ProductsComponent implements OnInit {
   public products: any[] = [];
   userLoggedIn = false;
-  constructor(private api: ApiService, private dialog: MatDialog) {}
+  constructor(
+    private api: ApiService,
+    private dialog: MatDialog,
+    private auth: AuthService
+  ) {}
   ngOnInit(): void {
     this.api.getAllProducts().subscribe((res) => {
       this.products = res;
+    });
+    this.auth.currentUser$.subscribe((user) => {
+      this.userLoggedIn = !!user;
     });
   }
   private openLoginDialog(): void {
@@ -35,10 +43,10 @@ export class ProductsComponent implements OnInit {
   }
 
   addToCart(selected: any) {
-    const userDetails = localStorage.getItem('userDetails');
-    if (!userDetails) {
+    if (!this.userLoggedIn) {
       this.openLoginDialog();
+    } else {
+      console.log(selected);
     }
-    if (this.userLoggedIn) console.log(selected);
   }
 }

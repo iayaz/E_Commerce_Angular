@@ -1,3 +1,4 @@
+import { AuthService } from './../../service/auth/auth.service';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
@@ -33,15 +34,12 @@ export class NavbarComponent implements OnInit {
   isClickedShop = false;
   userLoggedIn = false;
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog, private auth: AuthService) {}
 
   ngOnInit(): void {
-    const userDetails = localStorage.getItem('userDetails');
-    if (userDetails) {
-      this.userLoggedIn = true;
-    } else {
-      this.openLoginDialog();
-    }
+    this.auth.currentUser$.subscribe((user) => {
+      this.userLoggedIn = !!user;
+    });
   }
 
   toggleClicked(btn: string) {
@@ -57,8 +55,9 @@ export class NavbarComponent implements OnInit {
   userSigned() {
     if (this.userLoggedIn) {
       // Perform logout
-      localStorage.removeItem('userDetails');
-      this.userLoggedIn = false;
+      // localStorage.removeItem('userDetails');
+      // this.userLoggedIn = false;
+      this.auth.logoutUser()
     } else {
       // Open login dialog
       this.openLoginDialog();
@@ -73,7 +72,7 @@ export class NavbarComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       // Check if login was successful
-      console.log(result)
+      console.log(result);
       if (result && result.success) {
         this.userLoggedIn = true;
       }
